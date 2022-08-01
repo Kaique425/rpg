@@ -3,6 +3,17 @@ from rest_framework import serializers
 from .models import Character, CharClass, Item, Weapon
 
 
+class AttributesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Character
+        fields = (
+            "constitution",
+            "vigor",
+            "strengh",
+            "dexterity",
+            "intelligence",
+            "charisma",
+        )
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
@@ -28,19 +39,14 @@ class CharacterSerializer(serializers.ModelSerializer):
             "id",
             "level",
             "name",
-            "constitution",
-            "vigor",
-            "strengh",
-            "dexterity",
-            "intelligence",
-            "charisma",
+            "attributes",
             "char_class",
             "inventory",
             "right_hand",
             "left_hand",
             "remain_points",
         )
-
+    attributes = AttributesSerializer()
     char_class = CharClassSerializer()
     inventory = ItemSerializer(many=True)
     right_hand = WeaponSerializer()

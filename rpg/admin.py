@@ -24,7 +24,11 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(CharClass)
 class CharClassAdmin(admin.ModelAdmin):
     ...
-
+"""
+@admin.register(Attributes)
+class AttributesClassAdmin(admin.ModelAdmin):
+    ...
+"""
 
 @admin.register(Weapon)
 class WeaponAdmin(admin.ModelAdmin):
