@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Character
-from .serializer import AttributesSerializer, CharacterSerializer
+from .serializer import AttributesSerializer, CharacterSerializer, InventorySerializer
 
 
 @api_view(("GET",))
@@ -33,3 +33,13 @@ def character_attributes(request, pk):
     character = Character.objects.filter(id=pk).first()
     serializer = AttributesSerializer(instance=character, many=False)
     return Response(serializer.data)
+
+
+@api_view(http_method_names=("GET",))
+def list_inventory(request, pk):
+    character = Character.objects.filter(id=pk).first()
+    serializer = InventorySerializer(instance=character, many=False)
+    return Response(serializer.data)
+    
+    
+    

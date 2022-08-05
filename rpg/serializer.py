@@ -20,6 +20,15 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = ("name",)
 
 
+class InventorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Character
+        fields = (
+            "inventory",
+        )
+        
+    inventory = ItemSerializer(many=True)
+
 class WeaponSerializer(serializers.ModelSerializer):
     class Meta:
         model = Weapon
@@ -39,16 +48,12 @@ class CharacterSerializer(serializers.ModelSerializer):
             "id",
             "level",
             "name",
-            "attributes",
             "char_class",
-            "inventory",
             "right_hand",
             "left_hand",
             "remain_points",
         )
-    attributes = AttributesSerializer()
     char_class = CharClassSerializer()
-    inventory = ItemSerializer(many=True)
     right_hand = WeaponSerializer()
     left_hand = WeaponSerializer()
     remain_points = serializers.IntegerField()
