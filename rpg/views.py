@@ -1,3 +1,5 @@
+from functools import partial
+
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -41,14 +43,15 @@ def list_inventory(request, pk):
     character = Character.objects.filter(id=pk).first()
     serializer = InventorySerializer(instance=character, many=False)
     return Response(serializer.data)
-    
-    
-    
-@api_view(http_method_names=("POST","GET"))
+
+
+@api_view(http_method_names=("PATCH", "GET"))
 def edit_attributes(request, pk):
     character = Character.objects.filter(id=pk).first()
-    serializer = AttributesSerializer(instance=character, data=request.data)
-    if request.method == "POST":
+    serializer = AttributesSerializer(
+        instance=character, data=request.data, partial=True
+    )
+    if request.method == "PATCH":
         if serializer.is_valid(raise_exception=True):
             serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
