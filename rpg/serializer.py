@@ -32,8 +32,8 @@ class InventorySerializer(serializers.ModelSerializer):
         print(inventory)
         for item in validated_data["inventory"]:
             print(item)
-        char = Character.objects.update(inventory)
-        char.save()
+        # char = Character.objects.update(inventory = )
+        # char.save()
         return instance
 
     inventory = ItemSerializer(many=True)
