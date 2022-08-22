@@ -14,6 +14,8 @@ class AttributesSerializer(serializers.ModelSerializer):
             "intelligence",
             "charisma",
         )
+
+
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
@@ -23,11 +25,19 @@ class ItemSerializer(serializers.ModelSerializer):
 class InventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
-        fields = (
-            "inventory",
-        )
-        
+        fields = ("inventory",)
+
+    def update(self, instance, validated_data):
+        inventory = validated_data["inventory"]
+        print(inventory)
+        for item in validated_data["inventory"]:
+            print(item)
+        char = Character.objects.update(inventory)
+        char.save()
+        return instance
+
     inventory = ItemSerializer(many=True)
+
 
 class WeaponSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,6 +63,7 @@ class CharacterSerializer(serializers.ModelSerializer):
             "left_hand",
             "remain_points",
         )
+
     char_class = CharClassSerializer()
     right_hand = WeaponSerializer()
     left_hand = WeaponSerializer()
