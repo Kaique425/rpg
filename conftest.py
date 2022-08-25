@@ -1,8 +1,8 @@
 import pytest
 
-from rpg.tests.factory import ProductFactory
+from rpg.rpg_tests.rpg_factory import CharacterFactory
 
 
 @pytest.fixture
-def product():
-    return ProductFactory()
+def character_teste():
+    return CharacterFactory.create()
