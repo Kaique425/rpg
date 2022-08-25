@@ -52,7 +52,7 @@ class Character(models.Model):
     left_hand = models.ForeignKey(
         Weapon, related_name="leftweapon", null=True, on_delete=models.SET_NULL
     )
-    inventory = models.ManyToManyField(Item, related_name="items")
+    inventory = models.ManyToManyField(Item, related_name="inventory")
     remain_points = models.IntegerField(default=0)
 
     def __str__(self):

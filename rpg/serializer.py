@@ -19,21 +19,29 @@ class AttributesSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ("name",)
+        fields = (
+            "id",
+            "name",
+        )
+        read_only_fields = ()
+
+    id = serializers.IntegerField(read_only=False)
 
 
 class InventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
-        fields = ("inventory",)
+        fields = ("inventory", "id")
 
     def update(self, instance, validated_data):
-        inventory = validated_data["inventory"]
-        print(inventory)
-        for item in validated_data["inventory"]:
-            print(item)
-        # char = Character.objects.update(inventory = )
-        # char.save()
+        inventory = validated_data.pop("inventory")
+        items_ids = [item["id"] for item in inventory]
+        print(items_ids)
+        instance.inventory.clear()
+        for id in items_ids:
+            item = Item.objects.filter(id=id).first()
+            instance.inventory.add(item)
+        instance.save()
         return instance
 
     inventory = ItemSerializer(many=True)

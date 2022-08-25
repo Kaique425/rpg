@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, reverse
 from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -8,29 +8,18 @@ from rest_framework_simplejwt.views import (
 
 from . import views
 
-rpg_router = SimpleRouter()
-rpg_router.register(
+app_name = "character"
+
+character_router = SimpleRouter()
+character_router.register(
     prefix="",
     viewset=views.CharacterAPIViewSet,
 )
 
-
-print(rpg_router.urls)
-
-"""    path(
-        "",
-        views.CharacterAPIViewSet.as_view(
-            actions={"get": "list", "post": "create"}, name="base"
-        ),
-    ),
-    path(
-        "<int:pk>",
-        views.CharacterAPIViewSet.as_view(
-            actions={"get": "retrieve", "delete": "destroy"}
-        ),
-        name="list_char",
-    ),"""
-
+inventory_router = SimpleRouter()
+inventory_router.register(
+    prefix="inventory", viewset=views.InventoryAPIViewSet, basename="inventory"
+)
 urlpatterns = [
     path(
         "attrs/<int:pk>",
@@ -42,18 +31,9 @@ urlpatterns = [
         ),
         name="char-attr",
     ),
-    path(
-        "inventory/<int:pk>",
-        views.InventoryAPIViewSet.as_view(
-            actions={
-                "get": "retrieve",
-                "patch": "update",
-            }
-        ),
-        name="inventory",
-    ),
+    path("", include(inventory_router.urls)),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("", include(rpg_router.urls)),
+    path("", include(character_router.urls)),
 ]
