@@ -1,8 +1,9 @@
 import pytest
 
-from rpg.rpg_tests.rpg_factory import CharacterFactory
+from rpg.rpg_testes.rpg_factory import CharacterFactory
 
 
-@pytest.fixture
-def character_teste():
-    return CharacterFactory.create()
+@pytest.fixture()
+def character():
+    char = CharacterFactory(name="Kaique")
+    return char
