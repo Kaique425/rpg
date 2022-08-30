@@ -13,8 +13,6 @@ class CharacterAdmin(admin.ModelAdmin):
     list_per_page = 12
     ordering = ("name",)
 
-    autocomplete_fields = ("inventory",)
-
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
@@ -24,11 +22,14 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(CharClass)
 class CharClassAdmin(admin.ModelAdmin):
     ...
+
+
 """
 @admin.register(Attributes)
 class AttributesClassAdmin(admin.ModelAdmin):
     ...
 """
+
 
 @admin.register(Weapon)
 class WeaponAdmin(admin.ModelAdmin):

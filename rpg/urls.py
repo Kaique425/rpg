@@ -16,10 +16,8 @@ character_router.register(
     viewset=views.CharacterAPIViewSet,
 )
 
-inventory_router = SimpleRouter()
-inventory_router.register(
-    prefix="inventory", viewset=views.InventoryAPIViewSet, basename="inventory"
-)
+items_router = SimpleRouter()
+items_router.register(prefix="item", viewset=views.ItemAPIViewSet, basename="items")
 urlpatterns = [
     path(
         "attrs/<int:pk>",
@@ -31,7 +29,8 @@ urlpatterns = [
         ),
         name="char-attr",
     ),
-    path("", include(inventory_router.urls)),
+    path("inventory/<int:pk>", views.inventory, name="inventory"),
+    path("", include(items_router.urls)),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

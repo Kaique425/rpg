@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
@@ -6,9 +6,9 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Character
+from .models import Character, Item
 from .permissions import IsOwner
-from .serializer import AttributesSerializer, CharacterSerializer, InventorySerializer
+from .serializer import AttributesSerializer, CharacterSerializer, ItemSerializer
 
 
 class CharacterAPIViewSet(ModelViewSet, IsOwner):
@@ -38,6 +38,16 @@ class AttrsAPIViewSet(ModelViewSet):
     serializer_class = AttributesSerializer
 
 
-class InventoryAPIViewSet(ModelViewSet):
-    queryset = Character.objects.all()
-    serializer_class = InventorySerializer
+class ItemAPIViewSet(ModelViewSet):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+
+@api_view(["GET"])
+def inventory(request, pk):
+    items = get_list_or_404(Item, character=pk)
+    qs = Item.objects.filter(character=pk)
+    print(items)
+    serializer = ItemSerializer(items, many=True)
+
+    return Response(serializer.data)

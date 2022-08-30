@@ -22,10 +22,11 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
+            "quantity",
+            "character",
         )
-        read_only_fields = ()
 
-    id = serializers.IntegerField(read_only=False)
+    id = serializers.IntegerField(read_only=True)
 
 
 class InventorySerializer(serializers.ModelSerializer):
@@ -35,12 +36,12 @@ class InventorySerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         inventory = validated_data.pop("inventory")
-        items_ids = [item["id"] for item in inventory]
-        print(items_ids)
+        item_instances = [
+            Item.objects.filter(id=item["id"]).first() for item in inventory
+        ]
         instance.inventory.clear()
-        for id in items_ids:
-            item = Item.objects.filter(id=id).first()
-            instance.inventory.add(item)
+        instance.inventory.add(*item_instances)
+        print(instance.inventory.all())
         instance.save()
         return instance
 
