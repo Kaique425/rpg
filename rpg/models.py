@@ -39,6 +39,11 @@ class Item(models.Model):
 
 
 class Character(models.Model):
+    class Meta:
+        ordering = [
+            "id",
+        ]
+
     level = models.IntegerField(default=1)
     objects = CharacterManager()
     name = models.CharField(max_length=64)

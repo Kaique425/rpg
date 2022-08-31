@@ -11,10 +11,14 @@ from .permissions import IsOwner
 from .serializer import AttributesSerializer, CharacterSerializer, ItemSerializer
 
 
+class PaginationClass(PageNumberPagination):
+    page_size = 3
+
+
 class CharacterAPIViewSet(ModelViewSet, IsOwner):
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = PaginationClass
     permission_classes = [IsAuthenticatedOrReadOnly]
     http_method_names = ["post", "get", "patch", "head", "options", "delete"]
 
