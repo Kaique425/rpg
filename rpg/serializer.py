@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Character, CharClass, Item, Weapon
+from .models import Character, CharClass, GenericItem, Item, Weapon
 
 
 class AttributesSerializer(serializers.ModelSerializer):
@@ -16,51 +16,57 @@ class AttributesSerializer(serializers.ModelSerializer):
         )
 
 
-class ItemSerializer(serializers.ModelSerializer):
+class GenericItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
     class Meta:
-        model = Item
+        model = GenericItem
         fields = (
             "id",
             "name",
+            "description",
+        )
+
+
+class ItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    generic_item = GenericItemSerializer(read_only=True)
+
+    class Meta:
+        model = Item
+        fields = (
+            "generic_item",
+            "id",
             "quantity",
             "character",
         )
 
-    id = serializers.IntegerField(read_only=True)
 
+"""    def update(self, instance, validated_data):
+        print(validated_data)
 
-class InventorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Character
-        fields = ("inventory", "id")
-
-    def update(self, instance, validated_data):
-        inventory = validated_data.pop("inventory")
-        item_instances = [
-            Item.objects.filter(id=item["id"]).first() for item in inventory
-        ]
-        instance.inventory.clear()
-        instance.inventory.add(*item_instances)
-        print(instance.inventory.all())
-        instance.save()
-        return instance
-
-    inventory = ItemSerializer(many=True)
+        return instance"""
 
 
 class WeaponSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
     class Meta:
         model = Weapon
-        fields = ("name",)
+        fields = ("name", "id")
 
 
 class CharClassSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
     class Meta:
         model = CharClass
-        fields = ("name", "description")
+        fields = ("id", "name", "description")
 
 
 class CharacterSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
     class Meta:
         model = Character
         fields = (
@@ -73,7 +79,17 @@ class CharacterSerializer(serializers.ModelSerializer):
             "remain_points",
         )
 
-    char_class = CharClassSerializer()
+    char_class = CharClassSerializer(read_only=True)
     right_hand = WeaponSerializer()
     left_hand = WeaponSerializer()
     remain_points = serializers.IntegerField()
+
+    def update(self, instance, validated_data):
+        right_hand = validated_data.get("right_hand")
+        left_hand = validated_data.get("left_hand")
+        teste1 = Weapon.objects.filter(id=right_hand["id"]).first()
+        teste2 = Weapon.objects.filter(id=left_hand["id"]).first()
+        instance.right_hand = teste1
+        instance.left_hand = teste2
+        instance.save()
+        return instance

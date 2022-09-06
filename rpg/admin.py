@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Character, CharClass, Item, Weapon
+from .models import Character, CharClass, GenericItem, Item, Weapon
 
 # Register your models here.
 
@@ -21,6 +21,11 @@ class ItemAdmin(admin.ModelAdmin):
 
 @admin.register(CharClass)
 class CharClassAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(GenericItem)
+class GenericItemAdmin(admin.ModelAdmin):
     ...
 
 

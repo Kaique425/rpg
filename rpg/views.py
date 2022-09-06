@@ -6,9 +6,14 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Character, Item
+from .models import Character, Item, Weapon
 from .permissions import IsOwner
-from .serializer import AttributesSerializer, CharacterSerializer, ItemSerializer
+from .serializer import (
+    AttributesSerializer,
+    CharacterSerializer,
+    ItemSerializer,
+    WeaponSerializer,
+)
 
 
 class PaginationClass(PageNumberPagination):
@@ -45,6 +50,11 @@ class AttrsAPIViewSet(ModelViewSet):
 class ItemAPIViewSet(ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+
+
+class WeaponViewSet(ModelViewSet):
+    queryset = Weapon.objects.all()
+    serializer_class = WeaponSerializer
 
 
 @api_view(["GET"])

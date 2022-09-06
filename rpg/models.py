@@ -27,15 +27,25 @@ class Weapon(models.Model):
         return self.name
 
 
-class Item(models.Model):
-    character = models.ForeignKey("rpg.Character", on_delete=models.CASCADE, null=True)
+class GenericItem(models.Model):
     name = models.CharField(max_length=64)
+    description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Item(models.Model):
+    generic_item = models.ForeignKey(
+        "rpg.GenericItem", on_delete=models.CASCADE, null=True
+    )
+    character = models.ForeignKey("rpg.Character", on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(20)], null=True
     )
 
     def __str__(self):
-        return self.name
+        return self.generic_item.name
 
 
 class Character(models.Model):
