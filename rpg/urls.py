@@ -13,7 +13,7 @@ app_name = "character"
 character_router = SimpleRouter()
 
 character_router.register(
-    prefix="",
+    prefix="characters",
     viewset=views.CharacterAPIViewSet,
     basename="character",
 )
@@ -21,14 +21,14 @@ character_router.register(
 items_router = SimpleRouter()
 
 items_router.register(
-    prefix="item",
+    prefix="items",
     viewset=views.ItemAPIViewSet,
     basename="items",
 )
 
 weapon_router = SimpleRouter()
 weapon_router.register(
-    prefix="weapon",
+    prefix="weapons",
     viewset=views.WeaponViewSet,
     basename="weapon",
 )
