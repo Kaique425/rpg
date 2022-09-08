@@ -16,8 +16,7 @@ class CharacterAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
-
+    ...
 
 @admin.register(CharClass)
 class CharClassAdmin(admin.ModelAdmin):

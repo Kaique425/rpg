@@ -44,8 +44,6 @@ class Item(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(20)], null=True
     )
 
-    def __str__(self):
-        return self.generic_item.name
 
 
 class Character(models.Model):
