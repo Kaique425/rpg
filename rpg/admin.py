@@ -18,6 +18,7 @@ class CharacterAdmin(admin.ModelAdmin):
 class ItemAdmin(admin.ModelAdmin):
     ...
 
+
 @admin.register(CharClass)
 class CharClassAdmin(admin.ModelAdmin):
     ...

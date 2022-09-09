@@ -10,6 +10,13 @@ from . import views
 
 app_name = "character"
 
+generic_router = SimpleRouter()
+generic_router.register(
+    viewset=views.GenericITemViewSet,
+    basename="generic-items",
+    prefix="generic-items",
+)
+
 character_router = SimpleRouter()
 
 character_router.register(
@@ -47,6 +54,7 @@ urlpatterns = [
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("", include(generic_router.urls)),
     path("", include(weapon_router.urls)),
     path("", include(items_router.urls)),
     path("", include(character_router.urls)),
