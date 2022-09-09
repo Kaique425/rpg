@@ -29,8 +29,26 @@ class GenericItemSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
-    generic_item = GenericItemSerializer(read_only=True)
+    generic_item = GenericItemSerializer()
+
+    class Meta:
+        model = Item
+        fields = (
+            "generic_item",
+            "id",
+            "quantity",
+            "character",
+        )
+
+
+class ItemCreationSerializer(serializers.ModelSerializer):
+    generic_item = serializers.PrimaryKeyRelatedField(
+        read_only=False, queryset=GenericItem.objects.all()
+    )
+    quantity = serializers.IntegerField()
+    character = serializers.PrimaryKeyRelatedField(
+        read_only=False, queryset=Character.objects.all()
+    )
 
     class Meta:
         model = Item

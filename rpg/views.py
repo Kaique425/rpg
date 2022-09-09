@@ -12,6 +12,7 @@ from .serializer import (
     AttributesSerializer,
     CharacterSerializer,
     GenericItemSerializer,
+    ItemCreationSerializer,
     ItemSerializer,
     WeaponSerializer,
 )
@@ -59,7 +60,7 @@ class AttrsAPIViewSet(ModelViewSet):
 
 class ItemAPIViewSet(ModelViewSet):
     queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+    serializer_class = ItemCreationSerializer
 
 
 class WeaponViewSet(ModelViewSet):

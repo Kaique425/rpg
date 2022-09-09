@@ -36,6 +36,9 @@ class GenericItem(models.Model):
 
 
 class Item(models.Model):
+    class Meta:
+        ordering = ("-id",)
+
     generic_item = models.ForeignKey(
         "rpg.GenericItem", on_delete=models.CASCADE, null=True
     )
@@ -44,6 +47,8 @@ class Item(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(20)], null=True
     )
 
+    def __str__(self):
+        return f"{self.generic_item} do {self.character}"
 
 
 class Character(models.Model):
